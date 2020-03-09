@@ -21,13 +21,9 @@
             searchhuman = objuserdata.getStudents();
             var cerarray = [];
             var acharray = [];
-            // console.log("See " + objuserdata.students);
-            //  console.log("BEfore" + objuserdata.students.size);
-            //console.log("Please prkint" + humans.size);
-            //objuserdata.saveToLocal(humans);
             a = objuserdata.fromLocal();
             console.log("Check " + a.get(2));
-            // document.getElementById('stdcodeid').value =  objuserdata.setStdCode();
+            
             loadTable(a);
             loadGender();
             loadSearchCriteria();
@@ -74,236 +70,202 @@
                 
             },true);
             
-            // document.getElementById('addcertificateid').addEventListener('click', function(){
-                //     var a = '<td><input type="text" name="stdname" id="stdnameid"></td>';
-                // },true);
-                
-                document.getElementById('addachievementid').addEventListener('click',function(){
-                    str = document.getElementById('txtachievementid').value;
-                    if(objuserdata.checkOne(str) == true && objuserdata.checkFromArray(str,acharray)){
-                        if(document.getElementById('txtachievementid').value != ''){
-                            acharray.push(document.getElementById('txtachievementid').value)
-                            console.log(acharray);
-                            document.getElementById('txtachievementid').value = "";
-                        }
-                    }else{
-                        alert("Achievement should be single and should not be repeated");
+            document.getElementById('addachievementid').addEventListener('click',function(){
+                str = document.getElementById('txtachievementid').value;
+                if(objuserdata.checkOne(str) == true && objuserdata.checkFromArray(str,acharray)){
+                    if(document.getElementById('txtachievementid').value != ''){
+                        acharray.push(document.getElementById('txtachievementid').value)
+                        console.log(acharray);
+                        document.getElementById('txtachievementid').value = "";
                     }
-                },true);
-                
-                document.getElementById('signoffid').addEventListener('click',function(){
-                    window.location = "User2.html";
-                },true);
-                
-                document.getElementById('emailid').addEventListener('change', function(){
-                    if(objuserdata.checkMail(document.getElementById('emailid').value) == false){
-                        alert("Email id exists");
-                    }
-                },true);
-                
-                document.getElementById('btnsaveid').addEventListener('click', function() {
-                    if(objuserdata.checkAll() == true){
-                        console.log('Inside');
-                        if(objuserdata.checkMail(document.getElementById('emailid').value) == true){
-                            var stdbydate = objuserdata.setStdCode1(document.getElementById('stdnameid').value); 
-                            var human = {
-                                stdCode: stdbydate,
-                                stdName: document.getElementById('stdnameid').value,
-                                gender: document.getElementById('genderid').value,
-                                email: document.getElementById('emailid').value,
-                                address: document.getElementById('addressid').value,
-                                certificates: cerarray,
-                                achievements: acharray,
-                                role : 'Student'
-                            };
-                            console.log(human);
-                            humans = objuserdata.addStudents(human);
-                            objuserdata.saveToLocal(humans);
-                            console.log(humans.size);
-                            console.log(typeof(human));
-                            console.log(typeof(humans));
-                            console.log("Lets see " + humans);
-                            //    console.log(humans.get(2).stdName);
-                            loadTable(humans);
-                            cerarray=[];
-                            acharray=[];
-                        }else{
-                            alert('The Email Id should be unique');
-                        }
-                    }else{
-                        alert("Mandatory fields are empty");
-                    }
-                    
-                    // humans = objuserdata.savePerson(human);
-                    // console.log(humans.students);
-                    // console.log("Read it" + humans);
-                    // console.log(JSON.stringify(humans));
-                    // console.log("This is " + humans)
-                    // console.log(typeof(humans));
-                    // loadTable(humans);
-                }, true);
-                
-                document.getElementById('btnnewid').addEventListener('click', function(){
-                    // var optgen = '<option id="0">Select Gender</option>';
-                    // document.getElementById('genderid').innerHTML = optgen;
-                    loadGender();
-                    cerarray=[];
-                    acharray=[];
-                    // document.getElementById('stdcodeid').value =  objuserdata.setStdCode();
-                    var inputs = document.getElementsByClassName('form-control');
-                    for (i in inputs) {
-                        inputs[i].value = '';
-                    }
-                },true);
-                
-                document.getElementById("btnsearchid").addEventListener('click', function(){
-                    var sel = document.getElementById('searchid');
-                    var selvalue = sel.options[sel.selectedIndex].value;
-                    var txtvalue = document.getElementById('searchtxtid').value;
-                    console.log("YEh sel value h " + selvalue);
-                    if(selvalue!=0){
-                        if(selvalue == 3){
-                            loadTable(humans);
-                        }else if(selvalue == 1){
-                            console.log("Inside cer" + txtvalue);
-                            searchhuman = objuserdata.searchCer(txtvalue);
-                            document.getElementById('searchtxtid').value = "";
-                            loadTableWoDel(searchhuman);
-                        }else if(sel.value == 2){
-                            console.log("Inside ach");
-                            searchhuman = objuserdata.searchAch(txtvalue);
-                            document.getElementById('searchtxtid').value = "";
-                            loadTableWoDel(searchhuman);
-                        }
-                    }else{
-                        alert("Select Criteria");
-                    }
-                    
-                },true);
-                
-            }
+                }else{
+                    alert("Achievement should be single and should not be repeated");
+                }
+            },true);
             
-            function loadTable(student) {
-                console.log("start");
-                var tr='';
-                // for(let i of student.entries()){
-                    //    console.log(i[1].stdCode);
-                    // }
-                    var tf='';
-                    console.log(student)
-                    tf += '<tr><th>' + 'StdCode' + '</th><th>' + 'StdName' + '</th><th>' + 'Gender' + '</th><th>' + 'Email'  + '</th><th>' + 'Address' + '</th><th>' + 'Certificates' + '</th><th>' + 'Achievements' + '</th></tr>';
-                    
-                    for(let i of student.entries()){
-                        tr += '<tr><td>' + i[1].stdCode + '</td><td>' + i[1].stdName + '</td><td>' + i[1].gender  + '</td><td>' + i[1].email + '</td><td>' + i[1].address + '</td><td>' + i[1].certificates + '</td><td>' + i[1].achievements +  '</td><td><input type="button" class="btn-danger" value="Delete" name="btndelete" onclick="del('+i[0]+')" id="btndeleteid" ></td></tr>';
+            document.getElementById('signoffid').addEventListener('click',function(){
+                window.location = "User2.html";
+            },true);
+            
+            document.getElementById('emailid').addEventListener('change', function(){
+                if(objuserdata.checkMail(document.getElementById('emailid').value) == false){
+                    alert("Email id exists");
+                }
+            },true);
+            
+            document.getElementById('btnsaveid').addEventListener('click', function() {
+                if(objuserdata.checkAll() == true){
+                    console.log('Inside');
+                    if(objuserdata.checkMail(document.getElementById('emailid').value) == true){
+                        var stdbydate = objuserdata.setStdCode1(document.getElementById('stdnameid').value); 
+                        var human = {
+                            stdCode: stdbydate,
+                            stdName: document.getElementById('stdnameid').value,
+                            gender: document.getElementById('genderid').value,
+                            email: document.getElementById('emailid').value,
+                            address: document.getElementById('addressid').value,
+                            certificates: cerarray,
+                            achievements: acharray,
+                            role : 'Student'
+                        };
+                        console.log(human);
+                        humans = objuserdata.addStudents(human);
+                        objuserdata.saveToLocal(humans);
+                        console.log(humans.size);
+                        console.log(typeof(human));
+                        console.log(typeof(humans));
+                        console.log("Lets see " + humans);
+                        //    console.log(humans.get(2).stdName);
+                        loadTable(humans);
+                        cerarray=[];
+                        acharray=[];
+                    }else{
+                        alert('The Email Id should be unique');
                     }
-                    document.getElementById('thead').innerHTML = tf;
-                    document.getElementById('tbody').innerHTML = tr;
-                    // console.log(typeof(logic));
-                    console.log(objuserdata);
-                    //  console.log("check2 " + student.get(2));
-                    //  console.log(typeof(student));
-                    //  console.log(student);
-                    //    console.log(student.size);
-                    //    console.log("Look at this: " + student.get(1));
-                    //     var tf;
-                    //     console.log(student)
-                    //     tf += '<tr><th>' + 'StdCode' + '</th><th>' + 'StdName' + '</th><th>' + 'Gender' + '</th><th>' + 'Email'  + '</th><th>' + 'Address' + '</th><th>' + 'Certificates' + '</th><th>' + 'Achievements' + '</th></tr>';
-                    //     document.getElementById('thead').innerHTML = tf;
-                    //     for(i=1; i<=student.size ; i++){
-                        //         console.log("Count"  + i);
-                        //         console.log(student.get(i).stdName);
-                        //         tr += '<tr><td>' + student.get(i).stdCode + '</td><td>' + student.get(i).stdName + '</td><td>' + student.get(i).gender  + '</td><td>' + student.get(i).email + '</td><td>' + student.get(i).address + '</td><td>' + student.get(i).certificates + '</td><td>' + student.get(i).achievements +  '</td><td><input type="button" class="buttondelete" value="Delete" name="btndelete" onclick="del('+i+')" id="btndeleteid" ></td></tr>';
-                        //     }
-                        //     document.getElementById('tbody').innerHTML = tr;
-                    }
-                    function loadTableWoDel(student) {
-                        console.log("start");
-                        var tr = '';
-                        // for(let i of student.entries()){
-                            //    console.log(i[1].stdCode);
-                            // }
-                            var tf = '';
-                            console.log(student)
-                            tf += '<tr><th>' + 'StdCode' + '</th><th>' + 'StdName' + '</th><th>' + 'Gender' + '</th><th>' + 'Email'  + '</th><th>' + 'Address' + '</th><th>' + 'Certificates' + '</th><th>' + 'Achievements' + '</th></tr>';
-                            
-                            for(let i of student.entries()){
-                                tr += '<tr><td>' + i[1].stdCode + '</td><td>' + i[1].stdName + '</td><td>' + i[1].gender  + '</td><td>' + i[1].email + '</td><td>' + i[1].address + '</td><td>' + i[1].certificates + '</td><td>' + i[1].achievements +  '</td></tr>';
-                            }
-                            document.getElementById('thead').innerHTML = tf;
-                            document.getElementById('tbody').innerHTML = tr;
-                            console.log(objuserdata);
-                        }
-                        
-                        function del(num){
-                            console.log("Inside Delete: " + num);
-                            humans = objuserdata.delStudent(num);
-                            objuserdata.saveToLocal(humans);
-                            loadTable(humans);
-                        }
-                        
-                    </script>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="form-group">
-                            <h1>Admin Page</h1>
-                            <input type="button" style="margin-left: 99%;" class="btn-danger" value="Sign Off" id="signoffid">
-                        </div>
-                        <div class="form-group">
-                            <label>Student Name*</label>
-                            <input type="text" name="stdname" id="stdnameid" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Gender*</label>
-                            <select name="gender" id="genderid">
-                                <option value="0">Select Gender</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Email*</label>
-                            <input type="email" name="email" id="emailid" autocomplete="off" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Address</label>
-                            <input type="text" name="address" id="addressid" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Certificates (Press Add to insert the certificate)</label>
-                            <input type="text" id="txtcertificateid" class="form-control">
-                            <input type="button" class="btn-primary" value="Add" id="addcertificateid">
-                        </div>
-                        <div class="form-group">
-                            <label>Achievements (Press Add to insert the achievement)</label>
-                            <input type="text" id="txtachievementid" class="form-control">
-                            <input type="button" class="btn-primary" value="Add" id="addachievementid">
-                        </div>
-                        <div class="form-group">
-                            <input type="button" class="btn-primary" value="New" name="btnnew" id="btnnewid">
-                            <input type="button" class="btn-success" value="Save" name="btnsave" id="btnsaveid">
-                        </div>
-                        <div style="margin-top: 5%;"></div>
-                        <div class="form-group">
-                            <h3>Search Here!</h3>
-                            <select name="search" id="searchid">
-                            </select>
-                            <input type="text" name="searchtxt" id="searchtxtid" placeholder="Search Box">
-                            <input type="button" value="Search" id="btnsearchid" class="btn-warning">
-                        </div>
-                    </div>
-                    <table class="table table-bordered table-striped">
-                        <thead id="thead"></thead>
-                        <tbody id="tbody">
-                            <tr>
-                            </tr>
-                        </tbody>
-                        
-                    </table>
-                    
-                    <!-- Optional JavaScript -->
-                    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-                    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-                </body>
-                </html>
+                }else{
+                    alert("Mandatory fields are empty");
+                }
                 
+            }, true);
+            
+            document.getElementById('btnnewid').addEventListener('click', function(){
+                loadGender();
+                cerarray=[];
+                acharray=[];
+                var inputs = document.getElementsByClassName('form-control');
+                for (i in inputs) {
+                    inputs[i].value = '';
+                }
+            },true);
+            
+            document.getElementById("btnsearchid").addEventListener('click', function(){
+                var sel = document.getElementById('searchid');
+                var selvalue = sel.options[sel.selectedIndex].value;
+                var txtvalue = document.getElementById('searchtxtid').value;
+                console.log("YEh sel value h " + selvalue);
+                if(selvalue!=0){
+                    if(selvalue == 3){
+                        loadTable(humans);
+                    }else if(selvalue == 1){
+                        console.log("Inside cer" + txtvalue);
+                        searchhuman = objuserdata.searchCer(txtvalue);
+                        document.getElementById('searchtxtid').value = "";
+                        loadTableWoDel(searchhuman);
+                    }else if(sel.value == 2){
+                        console.log("Inside ach");
+                        searchhuman = objuserdata.searchAch(txtvalue);
+                        document.getElementById('searchtxtid').value = "";
+                        loadTableWoDel(searchhuman);
+                    }
+                }else{
+                    alert("Select Criteria");
+                }
+                
+            },true);
+            
+        }
+        
+        function loadTable(student) {
+            console.log("start");
+            var tr='';
+            var tf='';
+            console.log(student)
+            tf += '<tr><th>' + 'StdCode' + '</th><th>' + 'StdName' + '</th><th>' + 'Gender' + '</th><th>' + 'Email'  + '</th><th>' + 'Address' + '</th><th>' + 'Certificates' + '</th><th>' + 'Achievements' + '</th></tr>';
+            
+            for(let i of student.entries()){
+                tr += '<tr><td>' + i[1].stdCode + '</td><td>' + i[1].stdName + '</td><td>' + i[1].gender  + '</td><td>' + i[1].email + '</td><td>' + i[1].address + '</td><td>' + i[1].certificates + '</td><td>' + i[1].achievements +  '</td><td><input type="button" class="btn-danger" value="Delete" name="btndelete" onclick="del('+i[0]+')" id="btndeleteid" ></td></tr>';
+            }
+            document.getElementById('thead').innerHTML = tf;
+            document.getElementById('tbody').innerHTML = tr;
+            // console.log(typeof(logic));
+            console.log(objuserdata);
+            
+        }
+        function loadTableWoDel(student) {
+            console.log("start");
+            var tr = '';
+            
+            var tf = '';
+            console.log(student)
+            tf += '<tr><th>' + 'StdCode' + '</th><th>' + 'StdName' + '</th><th>' + 'Gender' + '</th><th>' + 'Email'  + '</th><th>' + 'Address' + '</th><th>' + 'Certificates' + '</th><th>' + 'Achievements' + '</th></tr>';
+            
+            for(let i of student.entries()){
+                tr += '<tr><td>' + i[1].stdCode + '</td><td>' + i[1].stdName + '</td><td>' + i[1].gender  + '</td><td>' + i[1].email + '</td><td>' + i[1].address + '</td><td>' + i[1].certificates + '</td><td>' + i[1].achievements +  '</td></tr>';
+            }
+            document.getElementById('thead').innerHTML = tf;
+            document.getElementById('tbody').innerHTML = tr;
+            console.log(objuserdata);
+        }
+        
+        function del(num){
+            console.log("Inside Delete: " + num);
+            humans = objuserdata.delStudent(num);
+            objuserdata.saveToLocal(humans);
+            loadTable(humans);
+        }
+        
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <h1>Admin Page</h1>
+            <input type="button" style="margin-left: 99%;" class="btn-danger" value="Sign Off" id="signoffid">
+        </div>
+        <div class="form-group">
+            <label>Student Name*</label>
+            <input type="text" name="stdname" id="stdnameid" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Gender*</label>
+            <select name="gender" id="genderid">
+                <option value="0">Select Gender</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Email*</label>
+            <input type="email" name="email" id="emailid" autocomplete="off" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" id="addressid" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Certificates (Press Add to insert the certificate)</label>
+            <input type="text" id="txtcertificateid" class="form-control">
+            <input type="button" class="btn-primary" value="Add" id="addcertificateid">
+        </div>
+        <div class="form-group">
+            <label>Achievements (Press Add to insert the achievement)</label>
+            <input type="text" id="txtachievementid" class="form-control">
+            <input type="button" class="btn-primary" value="Add" id="addachievementid">
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn-primary" value="New" name="btnnew" id="btnnewid">
+            <input type="button" class="btn-success" value="Save" name="btnsave" id="btnsaveid">
+        </div>
+        <div style="margin-top: 5%;"></div>
+        <div class="form-group">
+            <h3>Search Here!</h3>
+            <select name="search" id="searchid">
+            </select>
+            <input type="text" name="searchtxt" id="searchtxtid" placeholder="Search Box">
+            <input type="button" value="Search" id="btnsearchid" class="btn-warning">
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead id="thead"></thead>
+        <tbody id="tbody">
+            <tr>
+            </tr>
+        </tbody>
+        
+    </table>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

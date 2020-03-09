@@ -45,10 +45,9 @@
             document.getElementById('addcertificateid').addEventListener('click',function(){
                 var str = document.getElementById('txtcertificateid').value;
                 if(stduserdata.checkOne(str) == true){
-                    console.log("hm" + updcerarray);
                     if(str != ''){
                         updcerarray.push(document.getElementById('txtcertificateid').value)
-                        console.log(updcerarray);
+                        
                         document.getElementById('txtcertificateid').value = "";
                     }
                 }else{
@@ -61,7 +60,7 @@
                 if(stduserdata.checkOne(str) == true){
                     if(str != ''){
                         updacharray.push(document.getElementById('txtachievementid').value)
-                        console.log(updacharray);
+                    
                         document.getElementById('txtachievementid').value = "";
                     }
                 }else{
@@ -71,13 +70,11 @@
             
             document.getElementById('updcertificateid').addEventListener('click',function(){
                 var str = document.getElementById('txtcertificateid').value;
-                console.log("Working");
+                
                 if(stduserdata.checkOne(str) == true){
                     if(str != ''){
                         updcerarray = [];
-                        console.log("wORKING 2");
                         updcerarray.push(document.getElementById('txtcertificateid').value)
-                        console.log(updcerarray);
                         document.getElementById('txtcertificateid').value = "";
                     }
                 }else{
@@ -102,7 +99,7 @@
                     if(str != ''){
                         updacharray = [];
                         updacharray.push(document.getElementById('txtachievementid').value)
-                        console.log(updacharray);
+                        
                         document.getElementById('txtachievementid').value = "";
                     }
                 }else{
@@ -116,8 +113,6 @@
             
             document.getElementById('btnupdateid').addEventListener('click',function(){
                 var i = stduserdata.getIndividual();
-                console.log(updacharray);
-                console.log(updcerarray);
                 
                 var human = {
                     stdCode: a.get(i).stdCode,
@@ -133,11 +128,6 @@
                 console.log(human);
                 humans = stduserdata.updateStudents(human);
                 stduserdata.saveToLocal(humans);
-                console.log(humans.size);
-                console.log(typeof(human));
-                console.log(typeof(humans));
-                console.log("Lets see " + humans);
-                //    console.log(humans.get(2).stdName);
                 loadStudTable(humans);
                 
                 document.getElementById('addressid').value = "";

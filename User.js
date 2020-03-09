@@ -47,7 +47,6 @@ var Userclass = function(){
     this.setData = function(){
         localStorage.setItem('userKey',JSON.stringify(Array.from(users.entries())));
         console.log("printing Array");
-        //console.log(array);
        // debugger;
     };
 
