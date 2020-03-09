@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="Student.js"></script>
+    <script type="text/javascript" >
+        function preventBack(){window.history.forward();}
+        setTimeout("preventBack()", 0);
+        window.onunload=function(){null};
+    </script>
+    <script>
+        window.onload = function(){
+            var stduserdata = new studentUserData;
+            var stduser = stduserdata.getStudents();
+            //var stdindividual = stduserdata.getIndividual(stduser);
+            var a = stduserdata.fromLocal();
+            var i = stduserdata.getIndividual();
+            var updcerarray = a.get(i).certificates;
+            var updacharray = a.get(i).achievements;
+            var add = a.get(i).address;
+            loadStudTable(a);
+            
+            function loadStudTable(student){
+                var tr='';
+                var tf='';
+                var i = stduserdata.getIndividual();
+                tf += '<tr><th>' + 'StdCode' + '</th><th>' + 'StdName' + '</th><th>' + 'Gender' + '</th><th>' + 'Email'  + '</th><th>' + 'Address' + '</th><th>' + 'Certificates' + '</th><th>' + 'Achievements' + '</th></tr>';
+                document.getElementById('thead').innerHTML = tf;
+                
+                tr += '<tr><td>' + student.get(i).stdCode + '</td><td>' + student.get(i).stdName + '</td><td>' + student.get(i).gender  + '</td><td>' + student.get(i).email + '</td><td>' + student.get(i).address + '</td><td>' + student.get(i).certificates + '</td><td>' + student.get(i).achievements + '</td></tr>';
+                document.getElementById('tbody').innerHTML = tr;
+            }
+            
+            document.getElementById('addressid').addEventListener('change',function(){
+                if(document.getElementById('addressid').value != ''){
+                    add = document.getElementById('addressid').value;
+                }
+            },true);
+            
+            document.getElementById('addcertificateid').addEventListener('click',function(){
+                var str = document.getElementById('txtcertificateid').value;
+                if(stduserdata.checkOne(str) == true){
+                    console.log("hm" + updcerarray);
+                    if(str != ''){
+                        updcerarray.push(document.getElementById('txtcertificateid').value)
+                        console.log(updcerarray);
+                        document.getElementById('txtcertificateid').value = "";
+                    }
+                }else{
+                    alert("Only one certificate can be added");
+                }
+            },true);
+            
+            document.getElementById('addachievementid').addEventListener('click',function(){
+                var str = document.getElementById('txtachievementid').value;
+                if(stduserdata.checkOne(str) == true){
+                    if(str != ''){
+                        updacharray.push(document.getElementById('txtachievementid').value)
+                        console.log(updacharray);
+                        document.getElementById('txtachievementid').value = "";
+                    }
+                }else{
+                    alert("Only one achievement can be added");
+                }
+            },true);
+            
+            document.getElementById('updcertificateid').addEventListener('click',function(){
+                var str = document.getElementById('txtcertificateid').value;
+                console.log("Working");
+                if(stduserdata.checkOne(str) == true){
+                    if(str != ''){
+                        updcerarray = [];
+                        console.log("wORKING 2");
+                        updcerarray.push(document.getElementById('txtcertificateid').value)
+                        console.log(updcerarray);
+                        document.getElementById('txtcertificateid').value = "";
+                    }
+                }else{
+                    alert("Only one certificate can be added");
+                }
+                
+            },true);
+            
+            document.getElementById('clrcertificateid').addEventListener('click',function(){
+                updcerarray = [];
+                document.getElementById('txtcertificateid').value = "";
+            },true);
+            
+            document.getElementById('clrachievementid').addEventListener('click',function(){
+                updacharray = [];
+                document.getElementById('txtachievementid').value = "";
+            },true);
+            
+            document.getElementById('updachievementid').addEventListener('click',function(){
+                var str = document.getElementById('txtachievementid').value;
+                if(stduserdata.checkOne(str) == true){
+                    if(str != ''){
+                        updacharray = [];
+                        updacharray.push(document.getElementById('txtachievementid').value)
+                        console.log(updacharray);
+                        document.getElementById('txtachievementid').value = "";
+                    }
+                }else{
+                    alert("Only one achievement can be added");
+                }
+            },true);
+            
+            document.getElementById('signoffid').addEventListener('click',function(){
+                window.location = "User2.html";
+            },true);
+            
+            document.getElementById('btnupdateid').addEventListener('click',function(){
+                var i = stduserdata.getIndividual();
+                console.log(updacharray);
+                console.log(updcerarray);
+                
+                var human = {
+                    stdCode: a.get(i).stdCode,
+                    stdName: a.get(i).stdName,
+                    gender: a.get(i).gender,
+                    email: a.get(i).email,
+                    address: add,
+                    certificates: updcerarray,
+                    achievements: updacharray,
+                    role : 'Student'
+                };
+                
+                console.log(human);
+                humans = stduserdata.updateStudents(human);
+                stduserdata.saveToLocal(humans);
+                console.log(humans.size);
+                console.log(typeof(human));
+                console.log(typeof(humans));
+                console.log("Lets see " + humans);
+                //    console.log(humans.get(2).stdName);
+                loadStudTable(humans);
+                
+                document.getElementById('addressid').value = "";
+            },true)
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group">
+            <h1>Student Page</h1>
+            <input type="button"  style="margin-left: 99%;" class="btn-danger" class="signoff" value="Sign Off" id="signoffid">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" id="addressid" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Certificates (Press Update after performing the below operation)</label>
+            <input type="text" id="txtcertificateid" class="form-control">
+            <input type="button" value="Add" id="addcertificateid" class="btn-success">
+            <input type="button" value="Edit" id="updcertificateid" class="btn-primary">
+            <input type="button" value="Clear" id="clrcertificateid" class="btn-warning">
+        </div>
+        <div class="form-group">
+            <label>Achievements (Press Update after performing the below operation)</label>
+            <input type="text" id="txtachievementid" class="form-control">
+            <input type="button" value="Add" id="addachievementid" class="btn-success">
+            <input type="button" value="Edit" id="updachievementid" class="btn-primary">
+            <input type="button" value="Clear" id="clrachievementid" class="btn-warning">
+        </div>
+        <div style="margin-top: 3%;"></div>
+        <div class="form-group">
+            <input type="button" value="Update" name="btnupdate" id="btnupdateid" class="btn-success">
+        </div>
+        <div style="margin-top: 5%;"></div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead id="thead"></thead>
+        <tbody id="tbody">
+            <tr>
+            </tr>
+        </tbody>
+        
+    </table>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

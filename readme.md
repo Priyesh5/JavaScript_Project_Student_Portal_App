@@ -1,6 +1,6 @@
 The Student Portal is made for learning perspective.
 The project focuses on the working of a Admin-Student Portal
-The presenter of the project will be upgraded soon.
+The presentation of the project will be upgraded soon.
 -------------------------------------------------------------------------------------------------------- 
 The project consists of three Web pages.
     1.User.html
