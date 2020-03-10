@@ -59,7 +59,7 @@ class studentUserData{
         for(var j=0;j<A.length || k<student.certificates.length;j++){
             if(A.length == 0){
                 A[j] = 'nocer';
-            }else{
+            }else if(j<A.length){
                 A[j] = A[j].toLowerCase() + 'cer';
             }
 
@@ -82,7 +82,7 @@ class studentUserData{
             
             if(student.certificates.length == 0){
                 loccer[k] == 'nocer';
-            }else{
+            }else if(k < student.certificates.length){
                 loccer[k] = student.certificates[k].toLowerCase() + 'cer';
             }
             if(this.searchKey(loccer[k]) == true){
@@ -113,7 +113,8 @@ class studentUserData{
         for(var j=0;j<A.length || k<student.achievements.length;j++){
             if(A.length == 0){
                 A[j] = 'noach'
-            }else{
+            }else if(j<A.length){
+                console.log(A.length);
                 A[j] = A[j].toLowerCase() + 'ach';
             }
             if(this.searchKey(A[j]) == true){
@@ -133,7 +134,7 @@ class studentUserData{
             if(student.achievements.length == 0){
                 
                 locach[k] = 'noach';
-            }else{
+            }else if(k<student.achievements.length){
                 locach[k] = student.achievements[k].toLowerCase() + 'ach';
             }
             if(this.searchKey(locach[k]) == true){
@@ -184,4 +185,15 @@ class studentUserData{
         localStorage.setItem('student',JSON.stringify(Array.from(student)));
     }
     
+    checkFromArray(str,array){
+        str = str.toLowerCase();
+        var temparray = [];
+        for(var i=0;i<array.length;i++){
+            temparray[i] = array[i].toLowerCase();
+        }
+        if(temparray.indexOf(str) != -1){
+            return false;
+        }
+        return true;
+    }
 }

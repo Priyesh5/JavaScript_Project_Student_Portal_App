@@ -44,27 +44,27 @@
             
             document.getElementById('addcertificateid').addEventListener('click',function(){
                 var str = document.getElementById('txtcertificateid').value;
-                if(stduserdata.checkOne(str) == true){
+                if(stduserdata.checkOne(str) == true && stduserdata.checkFromArray(str,updcerarray) == true){
                     if(str != ''){
                         updcerarray.push(document.getElementById('txtcertificateid').value)
                         
                         document.getElementById('txtcertificateid').value = "";
                     }
                 }else{
-                    alert("Only one certificate can be added");
+                    alert("Certificate should be single and should not be repeated ");
                 }
             },true);
             
             document.getElementById('addachievementid').addEventListener('click',function(){
                 var str = document.getElementById('txtachievementid').value;
-                if(stduserdata.checkOne(str) == true){
+                if(stduserdata.checkOne(str) == true && stduserdata.checkFromArray(str,updacharray)){
                     if(str != ''){
                         updacharray.push(document.getElementById('txtachievementid').value)
                     
                         document.getElementById('txtachievementid').value = "";
                     }
                 }else{
-                    alert("Only one achievement can be added");
+                    alert("Achievemnet should be single and should not be repeated ");
                 }
             },true);
             
